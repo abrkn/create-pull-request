@@ -26,10 +26,6 @@ async function run(): Promise<void> {
 
     console.log(process.env)
 
-    const repo =
-      core.getInput('repo') ||
-      [github.context.repo.owner, github.context.repo.repo].join('/')
-
     const response = await octokit.pulls.create({
       base: core.getInput('base') ?? 'master',
       body: core.getInput('body'),
@@ -38,7 +34,7 @@ async function run(): Promise<void> {
       maintainer_can_modify: getBooleanInput('maintainer_can_modify'),
       head: core.getInput('head') || github.context.ref,
       owner: core.getInput('owner') || github.context.actor,
-      repo,
+      repo: core.getInput('repo') || process.env.GITHUB_REPOSITORY!,
       title: core.getInput('title') || github.context.ref
     })
 

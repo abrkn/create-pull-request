@@ -3538,8 +3538,6 @@ function run() {
         try {
             const octokit = new github.GitHub(core.getInput('token'));
             console.log(process.env);
-            const repo = core.getInput('repo') ||
-                [github.context.repo.owner, github.context.repo.repo].join('/');
             const response = yield octokit.pulls.create({
                 base: (_a = core.getInput('base')) !== null && _a !== void 0 ? _a : 'master',
                 body: core.getInput('body'),
@@ -3548,7 +3546,7 @@ function run() {
                 maintainer_can_modify: getBooleanInput('maintainer_can_modify'),
                 head: core.getInput('head') || github.context.ref,
                 owner: core.getInput('owner') || github.context.actor,
-                repo,
+                repo: core.getInput('repo') || process.env.GITHUB_REPOSITORY,
                 title: core.getInput('title') || github.context.ref
             });
             if (response.status !== 201) {
