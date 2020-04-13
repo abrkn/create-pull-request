@@ -1,0 +1,42 @@
+name: "Create pull request"
+description: "Create a Github pull request. See https://developer.github.com/v3/pulls/#create-a-pull-request"
+author: "Andreas Brekken"
+inputs:
+  token:
+    required: true
+    description: Github token, like secrets.GITHUB_TOKEN. To trigger workflows with the pull request, use a Personal Access Token instead.
+  title:
+    required: false
+    description: The title of the new pull request. Defaults to current ref
+  base:
+    required: false
+    description: The name of the branch you want the changes pulled into. This should be an existing branch on the current repository. You cannot submit a pull request to one repository that requests a merge to a base of another repository. Defaults to master.
+  head:
+    description: The name of the branch where your changes are implemented.
+    required: true
+  body:
+    required: false
+    description: The contents of the pull request.
+  draft:
+    required: false
+    description: true | false. Indicates whether the pull request is a draft.
+  maintainer_can_modify:
+    required: false
+    description: true | false. Indicates whether maintainers can modify the pull request.
+  owner:
+    description: Owner. Defaults to current actor
+    required: false
+  repo:
+    description: Repository. Defaults to current repo
+    required: false
+outputs:
+  html_url:
+    description: html_url
+  number:
+    description: number
+runs:
+  using: "node12"
+  main: "dist/index.js"
+branding:
+  icon: git-pull-request
+  color: gray-dark
