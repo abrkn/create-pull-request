@@ -3560,6 +3560,7 @@ function run() {
         catch (error) {
             console.error(error.stack);
             console.dir(error, { depth: null });
+            console.log('res', error.response);
             core.setFailed(error.message);
         }
     });
