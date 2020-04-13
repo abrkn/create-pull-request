@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable no-console */
 import * as core from '@actions/core'
 import * as github from '@actions/github'
@@ -27,9 +28,9 @@ async function run(): Promise<void> {
     console.log(process.env)
 
     const response = await octokit.pulls.create({
-      base: core.getInput('base') ?? 'master',
-      body: core.getInput('body'),
-      draft: getBooleanInput('draft'),
+      base: core.getInput('base') || 'master',
+      body: core.getInput('body') || undefined,
+      draft: getBooleanInput('draft') || undefined,
       // eslint-disable-next-line @typescript-eslint/camelcase
       maintainer_can_modify: getBooleanInput('maintainer_can_modify'),
       head: core.getInput('head') || github.context.ref,

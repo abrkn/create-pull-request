@@ -3516,6 +3516,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable no-console */
 const core = __importStar(__webpack_require__(470));
 const github = __importStar(__webpack_require__(469));
@@ -3533,15 +3534,14 @@ function getBooleanInput(name) {
     throw new Error(`Input ${name} must be true or false. Received "${value}"`);
 }
 function run() {
-    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const octokit = new github.GitHub(core.getInput('token'));
             console.log(process.env);
             const response = yield octokit.pulls.create({
-                base: (_a = core.getInput('base')) !== null && _a !== void 0 ? _a : 'master',
-                body: core.getInput('body'),
-                draft: getBooleanInput('draft'),
+                base: core.getInput('base') || 'master',
+                body: core.getInput('body') || undefined,
+                draft: getBooleanInput('draft') || undefined,
                 // eslint-disable-next-line @typescript-eslint/camelcase
                 maintainer_can_modify: getBooleanInput('maintainer_can_modify'),
                 head: core.getInput('head') || github.context.ref,
