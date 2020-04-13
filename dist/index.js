@@ -3520,8 +3520,8 @@ const core = __importStar(__webpack_require__(470));
 const github = __importStar(__webpack_require__(469));
 function getBooleanInput(name) {
     const value = core.getInput(name);
-    if (value === undefined) {
-        return value;
+    if (value === undefined || value.length === 0) {
+        return undefined;
     }
     if (value === 'true') {
         return true;
