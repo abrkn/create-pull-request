@@ -3529,7 +3529,7 @@ function getBooleanInput(name) {
     if (value === 'false') {
         return false;
     }
-    throw new Error(`Input ${name} must be true or false`);
+    throw new Error(`Input ${name} must be true or false. Received "${value}"`);
 }
 function run() {
     var _a, _b, _c, _d, _e;
