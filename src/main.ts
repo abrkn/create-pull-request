@@ -16,7 +16,7 @@ function getBooleanInput(name: string): boolean | undefined {
     return false
   }
 
-  throw new Error(`Input ${name} must be true or false`)
+  throw new Error(`Input ${name} must be true or false. Received "${value}"`)
 }
 
 async function run(): Promise<void> {
