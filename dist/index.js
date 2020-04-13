@@ -3537,6 +3537,7 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const octokit = new github.GitHub(core.getInput('token'));
+            console.log(process.env);
             const repo = core.getInput('repo') ||
                 [github.context.repo.owner, github.context.repo.repo].join('/');
             const response = yield octokit.pulls.create({
