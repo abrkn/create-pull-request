@@ -3516,6 +3516,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+/* eslint-disable no-console */
 const core = __importStar(__webpack_require__(470));
 const github = __importStar(__webpack_require__(469));
 function getBooleanInput(name) {
@@ -3556,6 +3557,7 @@ function run() {
             }
         }
         catch (error) {
+            console.error(error.stack);
             core.setFailed(error.message);
         }
     });

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import * as core from '@actions/core'
 import * as github from '@actions/github'
 
@@ -45,6 +46,8 @@ async function run(): Promise<void> {
       core.setOutput(outputName, response.data[outputName].toString())
     }
   } catch (error) {
+    console.error(error.stack)
+
     core.setFailed(error.message)
   }
 }
