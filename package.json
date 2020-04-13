@@ -1,6 +1,6 @@
 {
   "name": "create-pull-request",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Create pull request",
   "main": "lib/main.js",
   "scripts": {
