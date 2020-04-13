@@ -3533,20 +3533,22 @@ function getBooleanInput(name) {
     throw new Error(`Input ${name} must be true or false. Received "${value}"`);
 }
 function run() {
-    var _a, _b, _c, _d, _e;
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const octokit = new github.GitHub(core.getInput('token'));
+            const repo = core.getInput('repo') ||
+                [github.context.repo.owner, github.context.repo.repo].join('/');
             const response = yield octokit.pulls.create({
                 base: (_a = core.getInput('base'), (_a !== null && _a !== void 0 ? _a : 'master')),
                 body: core.getInput('body'),
                 draft: getBooleanInput('draft'),
                 // eslint-disable-next-line @typescript-eslint/camelcase
                 maintainer_can_modify: getBooleanInput('maintainer_can_modify'),
-                head: (_b = core.getInput('head'), (_b !== null && _b !== void 0 ? _b : github.context.ref)),
-                owner: (_c = core.getInput('owner'), (_c !== null && _c !== void 0 ? _c : github.context.actor)),
-                repo: (_d = core.getInput('repo'), (_d !== null && _d !== void 0 ? _d : github.context.repo)),
-                title: (_e = core.getInput('title'), (_e !== null && _e !== void 0 ? _e : github.context.ref))
+                head: core.getInput('head') || github.context.ref,
+                owner: core.getInput('owner') || github.context.actor,
+                repo,
+                title: core.getInput('title') || github.context.ref
             });
             if (response.status !== 201) {
                 throw new Error(`Unexpected response status, ${response.status}`);

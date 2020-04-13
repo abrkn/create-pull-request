@@ -24,16 +24,20 @@ async function run(): Promise<void> {
   try {
     const octokit = new github.GitHub(core.getInput('token'))
 
+    const repo =
+      core.getInput('repo') ||
+      [github.context.repo.owner, github.context.repo.repo].join('/')
+
     const response = await octokit.pulls.create({
       base: core.getInput('base') ?? 'master',
       body: core.getInput('body'),
       draft: getBooleanInput('draft'),
       // eslint-disable-next-line @typescript-eslint/camelcase
       maintainer_can_modify: getBooleanInput('maintainer_can_modify'),
-      head: core.getInput('head') ?? github.context.ref,
-      owner: core.getInput('owner') ?? github.context.actor,
-      repo: core.getInput('repo') ?? github.context.repo,
-      title: core.getInput('title') ?? github.context.ref
+      head: core.getInput('head') || github.context.ref,
+      owner: core.getInput('owner') || github.context.actor,
+      repo,
+      title: core.getInput('title') || github.context.ref
     })
 
     if (response.status !== 201) {
