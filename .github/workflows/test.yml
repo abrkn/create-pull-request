@@ -23,6 +23,7 @@ jobs:
           name=test-`date +%s`
           git checkout -b $name
           echo ::set-output name=name::$name
+          git push origin $name
       - uses: ./
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
