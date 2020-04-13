@@ -47,6 +47,7 @@ async function run(): Promise<void> {
     }
   } catch (error) {
     console.error(error.stack)
+    console.dir(error, {depth: null})
 
     core.setFailed(error.message)
   }
