@@ -1,16 +1,49 @@
 import * as core from '@actions/core'
-import {wait} from './wait'
+import * as github from '@actions/github'
+
+function getBooleanInput(name: string): boolean | undefined {
+  const value = core.getInput(name)
+
+  if (value === undefined) {
+    return value
+  }
+
+  if (value === 'true') {
+    return true
+  }
+
+  if (value === 'false') {
+    return false
+  }
+
+  throw new Error(`Input ${name} must be true or false`)
+}
 
 async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`)
+    const octokit = new github.GitHub(core.getInput('token'))
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    const response = await octokit.pulls.create({
+      base: core.getInput('base') ?? 'master',
+      body: core.getInput('body'),
+      draft: getBooleanInput('draft'),
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      maintainer_can_modify: getBooleanInput('maintainer_can_modify'),
+      head: core.getInput('head') ?? github.context.ref,
+      owner: core.getInput('owner') ?? github.context.actor,
+      repo: core.getInput('repo') ?? github.context.repo,
+      title: core.getInput('title') ?? github.context.ref
+    })
 
-    core.setOutput('time', new Date().toTimeString())
+    if (response.status !== 201) {
+      throw new Error(`Unexpected response status, ${response.status}`)
+    }
+
+    const outputNames: (keyof typeof response.data)[] = ['html_url', 'number']
+
+    for (const outputName of outputNames) {
+      core.setOutput(outputName, response.data[outputName].toString())
+    }
   } catch (error) {
     core.setFailed(error.message)
   }
