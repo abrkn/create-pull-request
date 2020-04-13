@@ -4,8 +4,8 @@ import * as github from '@actions/github'
 function getBooleanInput(name: string): boolean | undefined {
   const value = core.getInput(name)
 
-  if (value === undefined) {
-    return value
+  if (value === undefined || value.length === 0) {
+    return undefined
   }
 
   if (value === 'true') {
