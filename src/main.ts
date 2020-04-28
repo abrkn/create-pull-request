@@ -24,7 +24,7 @@ async function run(): Promise<void> {
   try {
     const octokit = new github.GitHub(core.getInput('token'))
 
-    const response = await octokit.pulls.create({
+    const payload = {
       base: core.getInput('base') || 'master',
       body: core.getInput('body') || undefined,
       draft: getBooleanInput('draft') || undefined,
@@ -34,7 +34,11 @@ async function run(): Promise<void> {
       owner: core.getInput('owner') || github.context.actor,
       repo: core.getInput('repo') || github.context.repo.repo,
       title: core.getInput('title') || github.context.ref
-    })
+    }
+
+    console.log('payload', payload)
+
+    const response = await octokit.pulls.create(payload)
 
     if (response.status !== 201) {
       throw new Error(`Unexpected response status, ${response.status}`)
